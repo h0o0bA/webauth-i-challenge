@@ -3,6 +3,7 @@ const helmet = require("helmet");
 const bcrypt = require("bcryptjs");
 
 const UsersDb = require("./users/users-model.js");
+const auth = require("./auth/auth-middleware.js");
 
 const server = express();
 
@@ -47,7 +48,7 @@ server.post("/api/login", (req, res) => {
 
 // protect /api/users so only clients that provide valid credentials can see the list of users
 // read the username and password from the headers instead of the body (can't send a body on a GET request)
-server.get("/api/users", (req, res) => {
+server.get("/api/users", auth, (req, res) => {
   UsersDb.find()
     .then(users => {
       res.json(users);
