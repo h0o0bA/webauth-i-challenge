@@ -32,8 +32,20 @@ router.post("/login", (req, res) => {
       }
     })
     .catch(error => {
-      res.status(500).json({ message: "Login Error!" });
+      res.status(500).json({ message: "Error logging in!" });
     });
+});
+
+router.get("/logout", (req, res) => {
+  if (req.session) {
+    req.session.destroy(err => {
+      if (err) {
+        res.json({ message: "Error logging out!" });
+      } else {
+        res.json({ message: "Logged out successfully!" });
+      }
+    });
+  }
 });
 
 module.exports = router;
